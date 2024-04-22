@@ -17,14 +17,14 @@ import javax.persistence.SequenceGenerator;
  * @author ASUS
  */
 @Entity
-@Table(name = "empleadotemporal")
+@Table(name = "empleado")
 public class Empleado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "empleadotemporal_id_seq")
-    @SequenceGenerator(name = "empleadotemporal_id_seq",
-            sequenceName = "empleadotemporal_id_seq",
+            generator = "empleado_id_seq")
+    @SequenceGenerator(name = "empleado_id_seq",
+            sequenceName = "empleado_id_seq",
             initialValue = 1, allocationSize = 1)
     @Column(name = "id")
     private Long clave;
