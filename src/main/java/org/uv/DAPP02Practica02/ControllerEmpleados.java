@@ -28,7 +28,7 @@ public class ControllerEmpleados {
     @Autowired
     private RepositoryEmpleado repositoryEmpleado;
     
-    @GetMapping()
+    @GetMapping("empleados")
     public List<Empleado> list() {
         return repositoryEmpleado.findAll();
     }
@@ -53,18 +53,34 @@ public class ControllerEmpleados {
     }
     
     @PutMapping("empleado/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
-        return null;
+    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Empleado empleadoActualizado) {
+        Optional<Empleado> optionalEmpleado = repositoryEmpleado.findById(Long.valueOf(id));
+        if (optionalEmpleado.isPresent()) {
+            Empleado empleado = optionalEmpleado.get();
+            empleado.setNombre(empleadoActualizado.getNombre());
+            empleado.setDireccion(empleadoActualizado.getDireccion());
+            empleado.setTelefono(empleadoActualizado.getTelefono());
+            repositoryEmpleado.save(empleado);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
     
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Object input) {
-        return null;
+    public ResponseEntity<Empleado> post(@RequestBody Empleado nuevoEmpleado) {
+        Empleado empleadoGuardado = repositoryEmpleado.save(nuevoEmpleado);
+        return ResponseEntity.ok().body(empleadoGuardado);
     }
     
     @DeleteMapping("empleado/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        return null;
+         if (repositoryEmpleado.existsById(Long.valueOf(id))) {
+            repositoryEmpleado.deleteById(Long.valueOf(id));
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
     
 }
